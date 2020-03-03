@@ -1,3 +1,5 @@
+### Updated to .NET Core 3.1, switched to [grpc-dotnet](https://github.com/grpc/grpc-dotnet)
+------
 ### Read More - [https://medium.com/@EmperorRXF/evaluating-performance-of-rest-vs-grpc](https://medium.com/@EmperorRXF/evaluating-performance-of-rest-vs-grpc-1b8bdf0b22da?source=https://github.com/EmperorRXF/RESTvsGRPC)
 
 # RESTvsGRPC

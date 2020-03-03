@@ -1,24 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace GrpcAPI
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            StartServer().GetAwaiter().GetResult();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        private static async Task StartServer()
-        {
-            var server = new MeteoriteLandingServer();
-            server.Start();
-
-            Console.WriteLine("GRPC MeteoriteLandingServer Running on localhost:6000");
-            Console.ReadKey();
-
-            await server.ShutdownAsync();
-        }
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls("http://localhost:6000/");
     }
 }

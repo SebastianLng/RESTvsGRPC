@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace RESTvsGRPC
 {
+    [MemoryDiagnoser]
     [AsciiDocExporter]
     [CsvExporter]
     [HtmlExporter]

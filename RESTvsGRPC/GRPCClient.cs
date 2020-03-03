@@ -1,5 +1,7 @@
 ﻿using Grpc.Core;
+using Grpc.Net.Client;
 using ModelLibrary.GRPC;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static ModelLibrary.GRPC.MeteoriteLandingsService;
@@ -8,12 +10,14 @@ namespace RESTvsGRPC
 {
     public class GRPCClient
     {
-        private readonly Channel channel;
+        private readonly GrpcChannel channel;
         private readonly MeteoriteLandingsServiceClient client;
 
         public GRPCClient()
         {
-            channel = new Channel("localhost:6000", ChannelCredentials.Insecure);
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            channel = GrpcChannel.ForAddress("http://localhost:6000");
             client = new MeteoriteLandingsServiceClient(channel);
         }
 
@@ -26,12 +30,11 @@ namespace RESTvsGRPC
         {
             List<MeteoriteLanding> meteoriteLandings = new List<MeteoriteLanding>();
 
-            using (var response = client.GetLargePayload(new EmptyRequest()).ResponseStream)
+            var response = client.GetLargePayload(new EmptyRequest()).ResponseStream;
+
+            while (await response.MoveNext())
             {
-                while (await response.MoveNext())
-                {
-                    meteoriteLandings.Add(response.Current);
-                }
+                meteoriteLandings.Add(response.Current);
             }
 
             return meteoriteLandings;
